@@ -9,10 +9,12 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 
 public class Utils {
-    public static LinkedHashMap<String, String> stringToJson(String filepath) throws IOException {
+    public static LinkedHashMap<String, String> fileContentToMap(String filepath) throws IOException {
         Path path = Path.of(filepath);
-        String content = Files.readString(path);
-        return new ObjectMapper().readValue(content, new TypeReference<>(){});
+        return new ObjectMapper()
+                .readValue(Files.readString(path),
+                        new TypeReference<>() {
+                        });
     }
 
     public static String prettyPrintMap(LinkedHashMap<String, String> map) {

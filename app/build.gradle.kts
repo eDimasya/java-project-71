@@ -1,6 +1,8 @@
 plugins {
     application
     id("io.freefair.lombok") version "8.6"
+    checkstyle
+    jacoco
 }
 
 group = "hexlet.code"
@@ -24,6 +26,10 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+checkstyle {
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
 }
 
 application {

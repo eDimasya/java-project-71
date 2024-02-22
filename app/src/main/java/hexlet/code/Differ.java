@@ -1,16 +1,20 @@
 package hexlet.code;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Differ {
     public static String generate(String filepath1, String filepath2) throws IOException {
         LinkedHashMap<String, String> result =
-                compareMaps(Utils.stringToJson(filepath1),
-                        Utils.stringToJson(filepath2))
+                compareMaps(
+                        Utils.fileContentToMap(filepath1),
+                        Utils.fileContentToMap(filepath2))
                         .entrySet().stream()
-                        .sorted(Comparator.comparing(m -> m.getKey().substring(2)))
+                        .sorted(Comparator.comparing(m ->
+                                m.getKey().substring(2)))
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue,
