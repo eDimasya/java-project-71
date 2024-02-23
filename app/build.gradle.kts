@@ -16,6 +16,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     implementation("info.picocli:picocli:4.7.5")
+    implementation("org.jacoco:org.jacoco.core:0.8.11")
     annotationProcessor("info.picocli:picocli-codegen:4.7.5")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
@@ -25,8 +26,8 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+    useJUnitPlatform()
 }
 
 checkstyle {
