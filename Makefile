@@ -15,3 +15,6 @@ run :
 
 checkstyle-main :
 	./app/gradlew -p ./app checkstyleMain
+
+report:
+	./app/gradlew -p ./app jacocoTestReport
