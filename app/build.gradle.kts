@@ -3,6 +3,7 @@ plugins {
     id("io.freefair.lombok") version "8.6"
     checkstyle
     jacoco
+    java
 }
 
 group = "hexlet.code"
@@ -41,8 +42,7 @@ application {
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
-        xml.required = false
-        csv.required = false
+        xml.required = true
         html.outputLocation = layout.buildDirectory.dir("reports/jacoco/test/html")
     }
 }
@@ -50,4 +50,10 @@ tasks.jacocoTestReport {
 jacoco {
     toolVersion = "0.8.11"
     reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(20)
+    }
 }
