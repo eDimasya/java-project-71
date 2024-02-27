@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 public class Differ {
     static String added = "+ ";
-    static String changed = "+ ";
     static String removed = "- ";
     static String notChanged = "  ";
     public static String generate(String filepath1, String filepath2) throws IOException {
         return Utils.prettyPrintMap(
-                sortMap(compareMaps(
-                        Utils.fileContentToMap(filepath1),
-                        Utils.fileContentToMap(filepath2))));
+                sortMap(
+                        compareMaps(
+                                Parser.fileContentToMap(filepath1),
+                                Parser.fileContentToMap(filepath2))));
     }
 
     public static LinkedHashMap<String, String> sortMap(LinkedHashMap<String, String> map) {
@@ -24,8 +24,7 @@ public class Differ {
                         m.getKey().substring(
                                 (m.getKey().startsWith(added)
                                         || m.getKey().startsWith(removed)
-                                        || m.getKey().startsWith(notChanged)
-                                        || m.getKey().startsWith(changed))
+                                        || m.getKey().startsWith(notChanged))
                                         ? 2 : 0)))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -43,7 +42,7 @@ public class Differ {
                     resultMap.put(notChanged + key, value);
                 } else {
                     resultMap.put(removed + key, value);
-                    resultMap.put(changed + key, map2.get(key));
+                    resultMap.put(added + key, map2.get(key));
                 }
             } else {
                 resultMap.put(removed + key, value);

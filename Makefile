@@ -1,22 +1,22 @@
 run-distr :
-	make -C app run-distr
+	./app/build/install/app/bin/app
 
 run-help :
-	make -C app run-help
+	./app/build/install/app/bin/app -h
 
 run-install-dir :
-	make -C app run-install-dir
+	./app/gradlew -p ./app installDist
 
 build :
-	make -C app build
+	./app/gradlew -p ./app build
 
 run :
-	make -C app run
+	./app/gradlew -p ./app run
 
 checkstyle-main :
-	make -C app checkstyle-main
+	./app/gradlew -p ./app checkstyleMain
 
 report:
-	make -C app report
+	./app/gradlew -p ./app jacocoTestReport
 
 .PHONY: build

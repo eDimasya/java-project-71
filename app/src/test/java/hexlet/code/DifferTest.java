@@ -22,6 +22,8 @@ class DifferTest {
                 }""";
         Assertions.assertEquals(expected,
                 Differ.generate("src/test/resources/file1.json", "src/test/resources/file2.json"));
+        Assertions.assertEquals(expected,
+                Differ.generate("src/test/resources/file3.yml", "src/test/resources/file4.yml"));
     }
 
     @Test

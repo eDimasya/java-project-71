@@ -9,3 +9,6 @@
 
 ### Workflow status:
 ![Workflow Status](https://github.com/eDimasya/java-project-71/actions/workflows/workflow.yml/badge.svg)
+
+### Usage example
+[![asciicast](https://asciinema.org/a/dm8UIGal26XKjNAc6jhE1fJeU.svg)](https://asciinema.org/a/dm8UIGal26XKjNAc6jhE1fJeU)
