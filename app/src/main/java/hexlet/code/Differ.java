@@ -1,5 +1,7 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -7,25 +9,24 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Differ {
-    static String added = "+ ";
-    static String removed = "- ";
-    static String notChanged = "  ";
-    public static String generate(String filepath1, String filepath2) throws IOException {
-        return Utils.prettyPrintMap(
-                sortMap(
-                        compareMaps(
-                                Parser.fileContentToMap(filepath1),
-                                Parser.fileContentToMap(filepath2))));
+    private static final String ADDED = "+";
+    private static final String REMOVED = "-";
+    private static final String NOT_CHANGED = " ";
+
+    public static String generate(String filepath1, String filepath2, String format) throws IOException {
+        return Formatter.prettyPrint(
+                sort(
+                        compare(
+                                Parser.getContent(filepath1),
+                                Parser.getContent(filepath2))),
+                format);
     }
 
-    public static LinkedHashMap<String, String> sortMap(LinkedHashMap<String, String> map) {
+    private static LinkedHashMap<Map.Entry<String, String>, Object> sort(
+            LinkedHashMap<Map.Entry<String, String>, Object> map) {
         return map.entrySet().stream()
-                .sorted(Comparator.comparing(m ->
-                        m.getKey().substring(
-                                (m.getKey().startsWith(added)
-                                        || m.getKey().startsWith(removed)
-                                        || m.getKey().startsWith(notChanged))
-                                        ? 2 : 0)))
+                .sorted(Comparator.comparing(element ->
+                        element.getKey().getKey()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -33,24 +34,29 @@ public class Differ {
                         LinkedHashMap::new));
     }
 
-    public static LinkedHashMap<String, String> compareMaps(LinkedHashMap<String, String> map1,
-                                                            LinkedHashMap<String, String> map2) {
-        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
-        map1.forEach((key, value) -> {
-            if (map2.containsKey(key)) {
-                if (map2.get(key).equals(value)) {
-                    resultMap.put(notChanged + key, value);
+    private static LinkedHashMap<Map.Entry<String, String>, Object> compare(JsonNode data1,
+                                                                            JsonNode data2) {
+        LinkedHashMap<Map.Entry<String, String>, Object> resultMap = new LinkedHashMap<>();
+        data1.fields().forEachRemaining(entry -> {
+            if (data2.has(entry.getKey())) {
+                if (data2.get(entry.getKey()).toString()
+                        .equals(entry.getValue().toString())) {
+                    resultMap.put(Map.entry(entry.getKey(), NOT_CHANGED),
+                            entry.getValue());
                 } else {
-                    resultMap.put(removed + key, value);
-                    resultMap.put(added + key, map2.get(key));
+                    resultMap.put(Map.entry(entry.getKey(), REMOVED),
+                            entry.getValue());
+                    resultMap.put(Map.entry(entry.getKey(), ADDED),
+                            data2.get(entry.getKey()));
                 }
             } else {
-                resultMap.put(removed + key, value);
+                resultMap.put(Map.entry(entry.getKey(), REMOVED),
+                        entry.getValue());
             }
         });
-        map2.forEach((key, value) -> {
-            if (!map1.containsKey(key)) {
-                resultMap.put(added + key, value);
+        data2.fields().forEachRemaining(entry -> {
+            if (!data1.has(entry.getKey())) {
+                resultMap.put(Map.entry(entry.getKey(), ADDED), entry.getValue());
             }
         });
         return resultMap;

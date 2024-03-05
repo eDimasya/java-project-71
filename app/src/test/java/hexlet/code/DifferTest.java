@@ -4,13 +4,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 class DifferTest {
 
     @Test
     void generate() throws IOException {
+        //Flat
         String expected = """
                 {
                 \t- follow: false
@@ -21,12 +20,51 @@ class DifferTest {
                 \t+ verbose: true
                 }""";
         Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file1.json", "src/test/resources/file2.json"));
+                Differ.generate("src/test/resources/file1_flat.json",
+                        "src/test/resources/file2_flat.json",
+                        Formatter.STYLISH));
         Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file3.yml", "src/test/resources/file4.yml"));
+                Differ.generate("src/test/resources/file1_flat.yml",
+                        "src/test/resources/file2_flat.yml",
+                        Formatter.STYLISH));
+        //Nested
+        expected = """
+                {
+                \t  chars1: [a, b, c]
+                \t- chars2: [d, e, f]
+                \t+ chars2: false
+                \t- checked: false
+                \t+ checked: true
+                \t- default: null
+                \t+ default: [value1, value2]
+                \t- id: 45
+                \t+ id: null
+                \t- key1: value1
+                \t+ key2: value2
+                \t  numbers1: [1, 2, 3, 4]
+                \t- numbers2: [2, 3, 4, 5]
+                \t+ numbers2: [22, 33, 44, 55]
+                \t- numbers3: [3, 4, 5]
+                \t+ numbers4: [4, 5, 6]
+                \t+ obj1: {nestedKey=value, isNested=true}
+                \t- setting1: Some value
+                \t+ setting1: Another value
+                \t- setting2: 200
+                \t+ setting2: 300
+                \t- setting3: true
+                \t+ setting3: none
+                }""";
+        Assertions.assertEquals(expected,
+                Differ.generate("src/test/resources/file1_nested.yml",
+                        "src/test/resources/file2_nested.yml",
+                        Formatter.STYLISH));
+        Assertions.assertEquals(expected,
+                Differ.generate("src/test/resources/file1_nested.json",
+                        "src/test/resources/file2_nested.json",
+                        Formatter.STYLISH));
     }
 
-    @Test
+    /*@Test
     void compareMaps() {
         LinkedHashMap<String, String> map1 = new LinkedHashMap<>(
                 Map.of("host", "hexlet.io",
@@ -44,11 +82,11 @@ class DifferTest {
                         "- timeout", "50",
                         "+ timeout", "20",
                         "+ verbose", "true"));
-        LinkedHashMap<String, String> actual = Differ.compareMaps(map1, map2);
+        LinkedHashMap<String, String> actual = Differ.compare(map1, map2);
         Assertions.assertEquals(expected, actual);
-    }
+    }*/
 
-    @Test
+    /*@Test
     void sortMap() {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("- follow", "false");
@@ -64,6 +102,6 @@ class DifferTest {
         expected.put("- timeout", "50");
         expected.put("+ timeout", "20");
         expected.put("+ verbose", "true");
-        Assertions.assertEquals(expected, Differ.sortMap(map));
-    }
+        Assertions.assertEquals(expected, Differ.sort(map));
+    }*/
 }
