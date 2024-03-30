@@ -1,48 +1,26 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
+import hexlet.code.formatters.Json;
+import hexlet.code.formatters.Plain;
+import hexlet.code.formatters.Stylish;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Formatter {
     public static final String STYLISH = "stylish";
+    public static final String PLAIN = "plain";
+    public static final String JSON = "json";
 
-    public static String prettyPrint(LinkedHashMap<Map.Entry<String, String>, Object> map, String format) {
+    public static String prettyPrint(
+            LinkedHashMap<Map.Entry<String, Differ.KeyAttribute>, Map.Entry<Object, Object>> map,
+            String format) throws IOException {
         return switch (format) {
-            case STYLISH -> prettyPrintStylish(map);
-            default -> prettyPrintStylish(map);
+            case STYLISH -> Stylish.prettyPrint(map);
+            case PLAIN -> Plain.printPretty(map);
+            case JSON -> Json.prettyPrint(map);
+            default -> null;
         };
-    }
-
-    private static String prettyPrintStylish(LinkedHashMap<Map.Entry<String, String>, Object> map) {
-        StringBuilder pretty = new StringBuilder();
-        pretty.append("{").append(System.lineSeparator());
-        map.forEach((key, value) -> pretty.append("\t")
-                .append(key.getValue())
-                .append(" ")
-                .append(key.getKey())
-                .append(": ")
-                .append(printValueStylish(value))
-                .append(System.lineSeparator()));
-        pretty.append("}");
-        return pretty.toString();
-    }
-
-    private static String printValueStylish(Object value) {
-        if (value instanceof TextNode) {
-            return ((TextNode) value).asText();
-        }
-        if (value instanceof ArrayNode) {
-            return String.valueOf(new ObjectMapper().convertValue(value, ArrayList.class));
-        }
-        if (value instanceof ObjectNode) {
-            return String.valueOf(new ObjectMapper().convertValue(value, LinkedHashMap.class));
-        }
-        return value.toString();
     }
 }

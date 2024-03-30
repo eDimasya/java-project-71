@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Differ {
-    private static final String ADDED = "+";
-    private static final String REMOVED = "-";
-    private static final String NOT_CHANGED = " ";
+    public enum KeyAttribute {
+        ADDED, REMOVED, NOT_CHANGED, CHANGED
+    }
 
     public static String generate(String filepath1, String filepath2, String format) throws IOException {
         return Formatter.prettyPrint(
@@ -22,8 +22,8 @@ public class Differ {
                 format);
     }
 
-    private static LinkedHashMap<Map.Entry<String, String>, Object> sort(
-            LinkedHashMap<Map.Entry<String, String>, Object> map) {
+    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> sort(
+            LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
         return map.entrySet().stream()
                 .sorted(Comparator.comparing(element ->
                         element.getKey().getKey()))
@@ -34,29 +34,27 @@ public class Differ {
                         LinkedHashMap::new));
     }
 
-    private static LinkedHashMap<Map.Entry<String, String>, Object> compare(JsonNode data1,
-                                                                            JsonNode data2) {
-        LinkedHashMap<Map.Entry<String, String>, Object> resultMap = new LinkedHashMap<>();
-        data1.fields().forEachRemaining(entry -> {
-            if (data2.has(entry.getKey())) {
-                if (data2.get(entry.getKey()).toString()
-                        .equals(entry.getValue().toString())) {
-                    resultMap.put(Map.entry(entry.getKey(), NOT_CHANGED),
-                            entry.getValue());
+    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> compare(JsonNode data1,
+                                                                                                     JsonNode data2) {
+        LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> resultMap = new LinkedHashMap<>();
+        data1.fields().forEachRemaining(data1entry -> {
+            if (data2.has(data1entry.getKey())) {
+                if (data2.get(data1entry.getKey()).equals(data1entry.getValue())) {
+                    resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.NOT_CHANGED),
+                            Map.entry(data1entry.getValue(), data1entry.getValue()));
                 } else {
-                    resultMap.put(Map.entry(entry.getKey(), REMOVED),
-                            entry.getValue());
-                    resultMap.put(Map.entry(entry.getKey(), ADDED),
-                            data2.get(entry.getKey()));
+                    resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.CHANGED),
+                            Map.entry(data1entry.getValue(), data2.get(data1entry.getKey())));
                 }
             } else {
-                resultMap.put(Map.entry(entry.getKey(), REMOVED),
-                        entry.getValue());
+                resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.REMOVED),
+                        Map.entry(data1entry.getValue(), data1entry.getValue()));
             }
         });
-        data2.fields().forEachRemaining(entry -> {
-            if (!data1.has(entry.getKey())) {
-                resultMap.put(Map.entry(entry.getKey(), ADDED), entry.getValue());
+        data2.fields().forEachRemaining(data2entry -> {
+            if (!data1.has(data2entry.getKey())) {
+                resultMap.put(Map.entry(data2entry.getKey(), KeyAttribute.ADDED),
+                        Map.entry(data2entry.getValue(), data2entry.getValue()));
             }
         });
         return resultMap;
