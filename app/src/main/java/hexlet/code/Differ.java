@@ -22,6 +22,10 @@ public class Differ {
                 format);
     }
 
+    public static String generate(String filepath1, String filepath2) throws IOException {
+        return generate(filepath1, filepath2, Formatter.STYLISH);
+    }
+
     private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> sort(
             LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
         return map.entrySet().stream()
