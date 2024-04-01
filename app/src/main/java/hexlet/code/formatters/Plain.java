@@ -20,15 +20,13 @@ public class Plain {
                             .append(key.getKey())
                             .append("' ")
                             .append("was added with value: ")
-                            .append(printValue(value.getKey()))
-                            .append(System.lineSeparator());
+                            .append(printValue(value.getKey()));
                 }
                 case REMOVED -> {
                     pretty.append("Property '")
                             .append(key.getKey())
                             .append("' ")
-                            .append("was removed")
-                            .append(System.lineSeparator());
+                            .append("was removed");
                 }
                 case CHANGED -> {
                     pretty.append("Property '")
@@ -37,13 +35,15 @@ public class Plain {
                             .append("was updated. From ")
                             .append(printValue(value.getKey()))
                             .append(" to ")
-                            .append(printValue(value.getValue()))
-                            .append(System.lineSeparator());
+                            .append(printValue(value.getValue()));
                 }
                 default -> {
                 }
             }
+            if (key.getValue() != KeyAttribute.NOT_CHANGED)
+                pretty.append(System.lineSeparator());
         });
+        pretty.deleteCharAt(pretty.lastIndexOf(System.lineSeparator()));
         return pretty.toString();
     }
 
