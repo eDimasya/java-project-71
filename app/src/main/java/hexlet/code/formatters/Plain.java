@@ -40,8 +40,9 @@ public class Plain {
                 default -> {
                 }
             }
-            if (key.getValue() != KeyAttribute.NOT_CHANGED)
+            if (key.getValue() != KeyAttribute.NOT_CHANGED) {
                 pretty.append(System.lineSeparator());
+            }
         });
         pretty.deleteCharAt(pretty.lastIndexOf(System.lineSeparator()));
         return pretty.toString();
