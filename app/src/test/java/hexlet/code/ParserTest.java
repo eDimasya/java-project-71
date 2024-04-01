@@ -11,7 +11,7 @@ import java.util.Map;
 
 class ParserTest {
     @Test
-    @SuppressWarnings("magicnumber")
+    @SuppressWarnings("MagicNumber")
     void getContent() {
         Map<String, Object> expectedMapFlat = new LinkedHashMap<>();
         expectedMapFlat.put("host", "hexlet.io");

@@ -15,7 +15,7 @@ import static hexlet.code.Differ.KeyAttribute.ADDED;
 
 class FormatterTest {
     @Test
-    @SuppressWarnings("magicnumber")
+    @SuppressWarnings("MagicNumber")
     void prettyPrint() throws IOException {
         LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map = new LinkedHashMap<>();
         map.put(Map.entry("follow", REMOVED), Map.entry(false, false));

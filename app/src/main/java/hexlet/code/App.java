@@ -36,6 +36,9 @@ public class App implements Callable<Integer> {
         new CommandLine(new App()).execute(args);
     }
 
+    /**
+     * @return 0
+     */
     @Override
     public Integer call() throws IOException {
         System.out.println(Differ.generate(filepath1, filepath2, format));
