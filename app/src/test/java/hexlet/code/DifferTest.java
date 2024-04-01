@@ -15,8 +15,8 @@ class DifferTest {
                   - follow: false
                     host: hexlet.io
                   - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
+                  - timeout: 1
+                  + timeout: 2
                   + verbose: true
                 }""";
         Assertions.assertEquals(expected,
@@ -41,16 +41,16 @@ class DifferTest {
                   + id: null
                   - key1: value1
                   + key2: value2
-                    numbers1: [1, 2, 3, 4]
-                  - numbers2: [2, 3, 4, 5]
-                  + numbers2: [22, 33, 44, 55]
-                  - numbers3: [3, 4, 5]
-                  + numbers4: [4, 5, 6]
+                    numbers1: [1, 2, 0]
+                  - numbers2: [2, 1, 0]
+                  + numbers2: [2, 1, 1]
+                  - numbers3: [0, 1, 2]
+                  + numbers4: [0, 1, 2]
                   + obj1: {nestedKey=value, isNested=true}
                   - setting1: Some value
                   + setting1: Another value
-                  - setting2: 200
-                  + setting2: 300
+                  - setting2: 2
+                  + setting2: 1
                   - setting3: true
                   + setting3: none
                 }""";
