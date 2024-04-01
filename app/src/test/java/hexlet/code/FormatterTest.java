@@ -24,12 +24,12 @@ class FormatterTest {
         map.put(Map.entry("verbose", ADDED), Map.entry(true, true));
         String expected = """
                 {
-                \t- follow: false
-                \t  host: hexlet.io
-                \t- proxy: 123.234.53.22
-                \t- timeout: 50
-                \t+ timeout: 20
-                \t+ verbose: true
+                  - follow: false
+                    host: hexlet.io
+                  - proxy: 123.234.53.22
+                  - timeout: 50
+                  + timeout: 20
+                  + verbose: true
                 }""";
         String actual = Formatter.prettyPrint(map, Formatter.STYLISH);
         Assertions.assertEquals(expected, actual);

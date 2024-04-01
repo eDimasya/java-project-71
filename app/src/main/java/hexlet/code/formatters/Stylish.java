@@ -17,7 +17,7 @@ public class Stylish {
         StringBuilder pretty = new StringBuilder();
         pretty.append("{").append(System.lineSeparator());
         map.forEach((key, value) -> {
-            pretty.append("\t");
+            pretty.append("  ");
             switch (key.getValue()) {
                 case ADDED -> {
                     pretty
@@ -34,7 +34,7 @@ public class Stylish {
                             .append(": ")
                             .append(printValue(value.getKey()))
                             .append(System.lineSeparator())
-                            .append("\t")
+                            .append("  ")
                             .append("+ ")
                             .append(key.getKey())
                             .append(": ")

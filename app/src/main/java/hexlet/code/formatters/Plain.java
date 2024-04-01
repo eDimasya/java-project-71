@@ -10,7 +10,7 @@ import java.util.Map;
 import static hexlet.code.Differ.KeyAttribute;
 
 public class Plain {
-    public static String printPretty(
+    public static String prettyPrint(
             LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
         StringBuilder pretty = new StringBuilder();
         map.forEach((key, value) -> {

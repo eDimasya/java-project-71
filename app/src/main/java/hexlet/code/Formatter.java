@@ -18,7 +18,7 @@ public class Formatter {
             String format) throws IOException {
         return switch (format) {
             case STYLISH -> Stylish.prettyPrint(map);
-            case PLAIN -> Plain.printPretty(map);
+            case PLAIN -> Plain.prettyPrint(map);
             case JSON -> Json.prettyPrint(map);
             default -> null;
         };
