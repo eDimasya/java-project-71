@@ -2,9 +2,7 @@ package hexlet.code.formatters;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
