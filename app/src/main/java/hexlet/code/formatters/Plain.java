@@ -1,5 +1,7 @@
 package hexlet.code.formatters;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -48,7 +50,7 @@ public class Plain {
         if (value instanceof String) {
             return "'" + value + "'";
         }
-        if (value instanceof Iterable<?> || value instanceof Map<?, ?>) {
+        if (value instanceof Iterable<?> || value instanceof Map<?, ?> || value instanceof Object[]) {
             return "[complex value]";
         }
         return String.valueOf(value);
