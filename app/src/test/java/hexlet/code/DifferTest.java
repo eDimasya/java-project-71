@@ -9,8 +9,16 @@ class DifferTest {
 
     @Test
     void generate() throws IOException {
+        String file1flatJsonPath = "src/test/resources/file1_flat.json";
+        String file2flatJsonPath = "src/test/resources/file2_flat.json";
+        String file1flatYmlPath = "src/test/resources/file1_flat.yml";
+        String file2flatYmlPath = "src/test/resources/file2_flat.yml";
+        String file1nestedJsonPath = "src/test/resources/file1_nested.json";
+        String file2nestedJsonPath = "src/test/resources/file2_nested.json";
+        String file1nestedYmlPath = "src/test/resources/file1_nested.yml";
+        String file2nestedYmlPath = "src/test/resources/file2_nested.yml";
         //Flat
-        String expected = """
+        String expectedFlat = """
                 {
                   - follow: false
                     host: hexlet.io
@@ -19,16 +27,16 @@ class DifferTest {
                   + timeout: 2
                   + verbose: true
                 }""";
-        Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file1_flat.json",
-                        "src/test/resources/file2_flat.json",
+        Assertions.assertEquals(expectedFlat,
+                Differ.generate(file1flatJsonPath,
+                        file2flatJsonPath,
                         Formatter.STYLISH));
-        Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file1_flat.yml",
-                        "src/test/resources/file2_flat.yml",
+        Assertions.assertEquals(expectedFlat,
+                Differ.generate(file1flatYmlPath,
+                        file2flatYmlPath,
                         Formatter.STYLISH));
         //Nested
-        expected = """
+        String expectedNested = """
                 {
                     chars1: [a, b, c]
                   - chars2: [d, e, f]
@@ -54,13 +62,13 @@ class DifferTest {
                   - setting3: true
                   + setting3: none
                 }""";
-        Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file1_nested.yml",
-                        "src/test/resources/file2_nested.yml",
+        Assertions.assertEquals(expectedNested,
+                Differ.generate(file1nestedYmlPath,
+                        file2nestedYmlPath,
                         Formatter.STYLISH));
-        Assertions.assertEquals(expected,
-                Differ.generate("src/test/resources/file1_nested.json",
-                        "src/test/resources/file2_nested.json",
+        Assertions.assertEquals(expectedNested,
+                Differ.generate(file1nestedJsonPath,
+                        file2nestedJsonPath,
                         Formatter.STYLISH));
     }
 }

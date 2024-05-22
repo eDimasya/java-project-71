@@ -15,14 +15,13 @@ import static hexlet.code.Differ.KeyAttribute.ADDED;
 
 class FormatterTest {
     @Test
-    @SuppressWarnings("MagicNumber")
     void prettyPrint() throws IOException {
-        LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map = new LinkedHashMap<>();
-        map.put(Map.entry("follow", REMOVED), Map.entry(false, false));
-        map.put(Map.entry("host", NOT_CHANGED), Map.entry("hexlet.io", "hexlet.io"));
-        map.put(Map.entry("proxy", REMOVED), Map.entry("123.234.53.22", "123.234.53.22"));
-        map.put(Map.entry("timeout", CHANGED), Map.entry(1, 2));
-        map.put(Map.entry("verbose", ADDED), Map.entry(true, true));
+        LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map = new LinkedHashMap<>();
+        map.put(Map.entry("follow", REMOVED), new Object[] {false});
+        map.put(Map.entry("host", NOT_CHANGED), new Object[] {"hexlet.io"});
+        map.put(Map.entry("proxy", REMOVED), new Object[] {"123.234.53.22"});
+        map.put(Map.entry("timeout", CHANGED), new Object[] {1, 2});
+        map.put(Map.entry("verbose", ADDED), new Object[] {true});
         String expected = """
                 {
                   - follow: false

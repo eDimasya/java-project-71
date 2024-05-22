@@ -1,15 +1,19 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 class ParserTest {
+
     @Test
     void getContent() {
         final Map<String, Object> expectedMapFlat = new LinkedHashMap<>();
@@ -17,7 +21,9 @@ class ParserTest {
         expectedMapFlat.put("timeout", 1);
         expectedMapFlat.put("proxy", "123.234.53.22");
         expectedMapFlat.put("follow", false);
-        final JsonNode expectedFlat = new ObjectMapper().convertValue(expectedMapFlat, JsonNode.class);
+        final Map<String, Object> expectedFlat =
+                new ObjectMapper().convertValue(expectedMapFlat, new TypeReference<>() {
+                });
         final Map<String, Object> expectedMapNested = new LinkedHashMap<>();
         expectedMapNested.put("setting1", "Another value");
         expectedMapNested.put("setting2", 1);
@@ -36,20 +42,31 @@ class ParserTest {
                         Map.of("nestedKey", "value",
                                 "isNested", true)),
                 JsonNode.class));
-        JsonNode expectedNested = new ObjectMapper().convertValue(expectedMapNested, JsonNode.class);
-
+        Map<String, Object> expectedNested =
+                new ObjectMapper().convertValue(expectedMapNested, new TypeReference<>() {
+                });
+        String file1flatJsonPath = "src/test/resources/file1_flat.json";
+        String file1flatYmlPath = "src/test/resources/file1_flat.yml";
+        String file2nestedJsonPath = "src/test/resources/file2_nested.json";
+        String file2nestedYmlPath = "src/test/resources/file2_nested.yml";
+        String fileAbsentPath = "src/test/resources/fileAbsent.json";
         try {
             Assertions.assertEquals(expectedFlat,
-                    Parser.getContent("src/test/resources/file1_flat.json"));
+                    Parser.parseContent(Files.readString(Path.of(file1flatJsonPath)),
+                            file1flatJsonPath.substring(file1flatJsonPath.lastIndexOf(".") + 1)));
             Assertions.assertEquals(expectedFlat,
-                    Parser.getContent("src/test/resources/file1_flat.yml"));
+                    Parser.parseContent(Files.readString(Path.of(file1flatYmlPath)),
+                            file1flatYmlPath.substring(file1flatYmlPath.lastIndexOf(".") + 1)));
             Assertions.assertEquals(expectedNested,
-                    Parser.getContent("src/test/resources/file2_nested.json"));
+                    Parser.parseContent(Files.readString(Path.of(file2nestedJsonPath)),
+                            file2nestedJsonPath.substring(file2nestedJsonPath.lastIndexOf(".") + 1)));
             Assertions.assertEquals(expectedNested,
-                    Parser.getContent("src/test/resources/file2_nested.yml"));
+                    Parser.parseContent(Files.readString(Path.of(file2nestedYmlPath)),
+                            file2nestedYmlPath.substring(file2nestedYmlPath.lastIndexOf(".") + 1)));
             Assertions.assertThrows(IOException.class,
                     () ->
-                            Parser.getContent("src/test/resources/fileAbsent.json"));
+                            Parser.parseContent(Files.readString(Path.of(fileAbsentPath)),
+                                    fileAbsentPath.substring(fileAbsentPath.lastIndexOf(".") + 1)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

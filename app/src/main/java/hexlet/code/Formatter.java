@@ -14,7 +14,7 @@ public class Formatter {
     public static final String JSON = "json";
 
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, Differ.KeyAttribute>, Map.Entry<Object, Object>> map,
+            LinkedHashMap<Map.Entry<String, Differ.KeyAttribute>, Object[]> map,
             String format) throws IOException {
         return switch (format) {
             case STYLISH -> Stylish.prettyPrint(map);

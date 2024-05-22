@@ -1,24 +1,30 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class Differ {
+
     public enum KeyAttribute {
         ADDED, REMOVED, NOT_CHANGED, CHANGED
     }
 
     public static String generate(String filepath1, String filepath2, String format) throws IOException {
         return Formatter.prettyPrint(
-                sort(
-                        compare(
-                                Parser.getContent(filepath1),
-                                Parser.getContent(filepath2))),
+                sort(compare(
+                        Objects.requireNonNull(Parser.parseContent(
+                                Files.readString(Path.of(filepath1)),
+                                filepath1.substring(filepath1.lastIndexOf(".") + 1))),
+                        Objects.requireNonNull(Parser.parseContent(
+                                Files.readString(Path.of(filepath2)),
+                                filepath2.substring(filepath2.lastIndexOf(".") + 1))))),
                 format);
     }
 
@@ -26,8 +32,8 @@ public class Differ {
         return generate(filepath1, filepath2, Formatter.STYLISH);
     }
 
-    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> sort(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
+    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> sort(
+            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map) {
         return map.entrySet().stream()
                 .sorted(Comparator.comparing(element ->
                         element.getKey().getKey()))
@@ -38,27 +44,27 @@ public class Differ {
                         LinkedHashMap::new));
     }
 
-    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> compare(JsonNode data1,
-                                                                                                     JsonNode data2) {
-        LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> resultMap = new LinkedHashMap<>();
-        data1.fields().forEachRemaining(data1entry -> {
-            if (data2.has(data1entry.getKey())) {
-                if (data2.get(data1entry.getKey()).equals(data1entry.getValue())) {
-                    resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.NOT_CHANGED),
-                            Map.entry(data1entry.getValue(), data1entry.getValue()));
+    private static LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> compare(
+            HashMap<String, Object> data1, HashMap<String, Object> data2) {
+        LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> resultMap = new LinkedHashMap<>();
+        data1.forEach((key, value) -> {
+            if (data2.containsKey(key)) {
+                if (Objects.equals(data2.get(key), value)) {
+                    resultMap.put(Map.entry(key, KeyAttribute.NOT_CHANGED),
+                            new Object[]{value});
                 } else {
-                    resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.CHANGED),
-                            Map.entry(data1entry.getValue(), data2.get(data1entry.getKey())));
+                    resultMap.put(Map.entry(key, KeyAttribute.CHANGED),
+                            new Object[]{value, data2.get(key)});
                 }
             } else {
-                resultMap.put(Map.entry(data1entry.getKey(), KeyAttribute.REMOVED),
-                        Map.entry(data1entry.getValue(), data1entry.getValue()));
+                resultMap.put(Map.entry(key, KeyAttribute.REMOVED),
+                        new Object[]{value});
             }
         });
-        data2.fields().forEachRemaining(data2entry -> {
-            if (!data1.has(data2entry.getKey())) {
-                resultMap.put(Map.entry(data2entry.getKey(), KeyAttribute.ADDED),
-                        Map.entry(data2entry.getValue(), data2entry.getValue()));
+        data2.forEach((key, value) -> {
+            if (!data1.containsKey(key)) {
+                resultMap.put(Map.entry(key, KeyAttribute.ADDED),
+                        new Object[]{value});
             }
         });
         return resultMap;

@@ -3,7 +3,6 @@ plugins {
     id("io.freefair.lombok") version "8.6"
     checkstyle
     jacoco
-    java
 }
 
 group = "hexlet.code"
@@ -53,8 +52,9 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
 }
 
-java {
+//IDEA 2024.1 doesn't work correctly with this config on WSL
+/*java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(20)
     }
-}
+}*/

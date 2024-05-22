@@ -13,7 +13,7 @@ import static hexlet.code.Differ.KeyAttribute;
 
 public class Stylish {
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
+            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map) {
         StringBuilder pretty = new StringBuilder();
         pretty.append("{").append(System.lineSeparator());
         map.forEach((key, value) -> {
@@ -24,7 +24,7 @@ public class Stylish {
                             .append("+ ")
                             .append(key.getKey())
                             .append(": ")
-                            .append(printValue(value.getKey()))
+                            .append(printValue(value[0]))
                             .append(System.lineSeparator());
                 }
                 case CHANGED -> {
@@ -32,27 +32,27 @@ public class Stylish {
                             .append("- ")
                             .append(key.getKey())
                             .append(": ")
-                            .append(printValue(value.getKey()))
+                            .append(printValue(value[0]))
                             .append(System.lineSeparator())
                             .append("  ")
                             .append("+ ")
                             .append(key.getKey())
                             .append(": ")
-                            .append(printValue(value.getValue()))
+                            .append(printValue(value[1]))
                             .append(System.lineSeparator());
                 }
                 case REMOVED -> {
                     pretty.append("- ")
                             .append(key.getKey())
                             .append(": ")
-                            .append(printValue(value.getKey()))
+                            .append(printValue(value[0]))
                             .append(System.lineSeparator());
                 }
                 default -> {
                     pretty.append("  ")
                             .append(key.getKey())
                             .append(": ")
-                            .append(printValue(value.getKey()))
+                            .append(printValue(value[0]))
                             .append(System.lineSeparator());
                 }
             }
@@ -71,6 +71,6 @@ public class Stylish {
         if (value instanceof ObjectNode) {
             return String.valueOf(new ObjectMapper().convertValue(value, LinkedHashMap.class));
         }
-        return value.toString();
+        return String.valueOf(value);
     }
 }

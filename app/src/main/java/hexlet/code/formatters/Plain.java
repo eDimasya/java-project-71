@@ -11,7 +11,7 @@ import static hexlet.code.Differ.KeyAttribute;
 
 public class Plain {
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Map.Entry<Object, Object>> map) {
+            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map) {
         StringBuilder pretty = new StringBuilder();
         map.forEach((key, value) -> {
             switch (key.getValue()) {
@@ -20,7 +20,7 @@ public class Plain {
                             .append(key.getKey())
                             .append("' ")
                             .append("was added with value: ")
-                            .append(printValue(value.getKey()));
+                            .append(printValue(value[0]));
                 }
                 case REMOVED -> {
                     pretty.append("Property '")
@@ -33,9 +33,9 @@ public class Plain {
                             .append(key.getKey())
                             .append("' ")
                             .append("was updated. From ")
-                            .append(printValue(value.getKey()))
+                            .append(printValue(value[0]))
                             .append(" to ")
-                            .append(printValue(value.getValue()));
+                            .append(printValue(value[1]));
                 }
                 default -> {
                 }
@@ -55,6 +55,6 @@ public class Plain {
         if (value instanceof ArrayNode || value instanceof ObjectNode) {
             return "[complex value]";
         }
-        return value.toString();
+        return String.valueOf(value);
     }
 }
