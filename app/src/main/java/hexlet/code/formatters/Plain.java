@@ -1,8 +1,5 @@
 package hexlet.code.formatters;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,7 +48,7 @@ public class Plain {
         if (value instanceof String) {
             return "'" + value + "'";
         }
-        if (value instanceof ArrayNode || value instanceof ObjectNode || value instanceof Object[]) {
+        if (value instanceof Iterable<?> || value instanceof Map<?,?>) {
             return "[complex value]";
         }
         return String.valueOf(value);

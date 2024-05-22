@@ -36,12 +36,14 @@ class FormatterTest {
 
         LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> mapNested = new LinkedHashMap<>();
         mapNested.put(Map.entry("checked", REMOVED), new Object[] {false});
-        mapNested.put(Map.entry("setting1", CHANGED), new Object[] {new Integer[]{1, 2}, 2});
+        mapNested.put(Map.entry("setting1", CHANGED), new Object[] {new Integer[] {1, 2}, 2});
         mapNested.put(Map.entry("setting2", CHANGED), new Object[] {true, "none"});
+        mapNested.put(Map.entry("setting3", ADDED), new Object[] {new String[] {"a", "b", "c"}});
         String expectedNestedPlain = """
                 Property 'checked' was removed
                 Property 'setting1' was updated. From [complex value] to 2
-                Property 'setting2' was updated. From true to 'none'""";
+                Property 'setting2' was updated. From true to 'none'
+                Property 'setting3' was added with value: [complex value]""";
         String actualNestedPlain = Formatter.prettyPrint(mapNested, Formatter.PLAIN);
         Assertions.assertEquals(expectedNestedPlain, actualNestedPlain);
     }

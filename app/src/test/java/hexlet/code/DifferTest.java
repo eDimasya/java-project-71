@@ -18,7 +18,7 @@ class DifferTest {
         String file1nestedYmlPath = "src/test/resources/file1_nested.yml";
         String file2nestedYmlPath = "src/test/resources/file2_nested.yml";
         //Flat
-        String expectedFlat = """
+        String expectedFlatStylish = """
                 {
                   - follow: false
                     host: hexlet.io
@@ -27,16 +27,16 @@ class DifferTest {
                   + timeout: 2
                   + verbose: true
                 }""";
-        Assertions.assertEquals(expectedFlat,
+        Assertions.assertEquals(expectedFlatStylish,
                 Differ.generate(file1flatJsonPath,
                         file2flatJsonPath,
                         Formatter.STYLISH));
-        Assertions.assertEquals(expectedFlat,
+        Assertions.assertEquals(expectedFlatStylish,
                 Differ.generate(file1flatYmlPath,
                         file2flatYmlPath,
                         Formatter.STYLISH));
         //Nested
-        String expectedNested = """
+        String expectedNestedStylish = """
                 {
                     chars1: [a, b, c]
                   - chars2: [d, e, f]
@@ -62,13 +62,31 @@ class DifferTest {
                   - setting3: true
                   + setting3: none
                 }""";
-        Assertions.assertEquals(expectedNested,
+        Assertions.assertEquals(expectedNestedStylish,
                 Differ.generate(file1nestedYmlPath,
                         file2nestedYmlPath,
                         Formatter.STYLISH));
-        Assertions.assertEquals(expectedNested,
+        Assertions.assertEquals(expectedNestedStylish,
                 Differ.generate(file1nestedJsonPath,
                         file2nestedJsonPath,
                         Formatter.STYLISH));
+        String expectedNestedPlain = """
+                Property 'chars2' was updated. From [complex value] to false
+                Property 'checked' was updated. From false to true
+                Property 'default' was updated. From null to [complex value]
+                Property 'id' was updated. From 45 to null
+                Property 'key1' was removed
+                Property 'key2' was added with value: 'value2'
+                Property 'numbers2' was updated. From [complex value] to [complex value]
+                Property 'numbers3' was removed
+                Property 'numbers4' was added with value: [complex value]
+                Property 'obj1' was added with value: [complex value]
+                Property 'setting1' was updated. From 'Some value' to 'Another value'
+                Property 'setting2' was updated. From 2 to 1
+                Property 'setting3' was updated. From true to 'none'""";
+        Assertions.assertEquals(expectedNestedPlain,
+                Differ.generate(file1nestedYmlPath,
+                        file2nestedYmlPath,
+                        Formatter.PLAIN));
     }
 }
