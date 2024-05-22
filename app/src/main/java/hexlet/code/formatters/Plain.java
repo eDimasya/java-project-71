@@ -48,7 +48,7 @@ public class Plain {
         if (value instanceof String) {
             return "'" + value + "'";
         }
-        if (value instanceof Iterable<?> || value instanceof Map<?,?>) {
+        if (value instanceof Iterable<?> || value instanceof Map<?, ?>) {
             return "[complex value]";
         }
         return String.valueOf(value);
