@@ -36,7 +36,7 @@ class FormatterTest {
 
         LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> mapNested = new LinkedHashMap<>();
         mapNested.put(Map.entry("checked", REMOVED), new Object[] {false});
-        mapNested.put(Map.entry("setting1", CHANGED), new Object[] {new Integer[]{1 ,2 ,3}, 2});
+        mapNested.put(Map.entry("setting1", CHANGED), new Object[] {new Integer[]{1, 2}, 2});
         mapNested.put(Map.entry("setting2", CHANGED), new Object[] {true, "none"});
         String expectedNestedPlain = """
                 Property 'checked' was removed
