@@ -16,13 +16,13 @@ import static hexlet.code.Differ.KeyAttribute.ADDED;
 class FormatterTest {
     @Test
     void prettyPrint() throws IOException {
-        LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map = new LinkedHashMap<>();
-        map.put(Map.entry("follow", REMOVED), new Object[] {false});
-        map.put(Map.entry("host", NOT_CHANGED), new Object[] {"hexlet.io"});
-        map.put(Map.entry("proxy", REMOVED), new Object[] {"123.234.53.22"});
-        map.put(Map.entry("timeout", CHANGED), new Object[] {1, 2});
-        map.put(Map.entry("verbose", ADDED), new Object[] {true});
-        String expected = """
+        LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> mapFlat = new LinkedHashMap<>();
+        mapFlat.put(Map.entry("follow", REMOVED), new Object[] {false});
+        mapFlat.put(Map.entry("host", NOT_CHANGED), new Object[] {"hexlet.io"});
+        mapFlat.put(Map.entry("proxy", REMOVED), new Object[] {"123.234.53.22"});
+        mapFlat.put(Map.entry("timeout", CHANGED), new Object[] {1, 2});
+        mapFlat.put(Map.entry("verbose", ADDED), new Object[] {true});
+        String expectedFlatStylish = """
                 {
                   - follow: false
                     host: hexlet.io
@@ -31,7 +31,18 @@ class FormatterTest {
                   + timeout: 2
                   + verbose: true
                 }""";
-        String actual = Formatter.prettyPrint(map, Formatter.STYLISH);
-        Assertions.assertEquals(expected, actual);
+        String actualFlatStylish = Formatter.prettyPrint(mapFlat, Formatter.STYLISH);
+        Assertions.assertEquals(expectedFlatStylish, actualFlatStylish);
+
+        LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> mapNested = new LinkedHashMap<>();
+        mapNested.put(Map.entry("checked", REMOVED), new Object[] {false});
+        mapNested.put(Map.entry("setting1", CHANGED), new Object[] {new Integer[]{1 ,2 ,3}, 2});
+        mapNested.put(Map.entry("setting2", CHANGED), new Object[] {true, "none"});
+        String expectedNestedPlain = """
+                Property 'checked' was removed
+                Property 'setting1' was updated. From [complex value] to 2
+                Property 'setting2' was updated. From true to 'none'""";
+        String actualNestedPlain = Formatter.prettyPrint(mapNested, Formatter.PLAIN);
+        Assertions.assertEquals(expectedNestedPlain, actualNestedPlain);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,10 +50,10 @@ public class Plain {
     }
 
     private static String printValue(Object value) {
-        if (value instanceof TextNode) {
-            return "'" + ((TextNode) value).asText() + "'";
+        if (value instanceof String) {
+            return "'" + value + "'";
         }
-        if (value instanceof ArrayNode || value instanceof ObjectNode) {
+        if (value instanceof ArrayNode || value instanceof ObjectNode || value instanceof Object[]) {
             return "[complex value]";
         }
         return String.valueOf(value);
