@@ -37,13 +37,13 @@ public class Differ {
                 if (Objects.equals(data2.get(key), value)) {
                     Map<String, Object> notChanged = new HashMap<>();
                     notChanged.put("key", key);
-                    notChanged.put("type", hexlet.code.KeyAttribute.NOT_CHANGED);
+                    notChanged.put("type", KeyAttribute.NOT_CHANGED);
                     notChanged.put("value", value);
                     compared.add(notChanged);
                 } else {
                     Map<String, Object> changed = new HashMap<>();
                     changed.put("key", key);
-                    changed.put("type", hexlet.code.KeyAttribute.CHANGED);
+                    changed.put("type", KeyAttribute.CHANGED);
                     changed.put("oldValue", value);
                     changed.put("newValue", data2.get(key));
                     compared.add(changed);
@@ -51,7 +51,7 @@ public class Differ {
             } else {
                 Map<String, Object> removed = new HashMap<>();
                 removed.put("key", key);
-                removed.put("type", hexlet.code.KeyAttribute.REMOVED);
+                removed.put("type", KeyAttribute.REMOVED);
                 removed.put("value", value);
                 compared.add(removed);
             }
@@ -60,7 +60,7 @@ public class Differ {
             if (!data1.containsKey(key)) {
                 Map<String, Object> added = new HashMap<>();
                 added.put("key", key);
-                added.put("type", hexlet.code.KeyAttribute.ADDED);
+                added.put("type", KeyAttribute.ADDED);
                 added.put("value", value);
                 compared.add(added);
             }
