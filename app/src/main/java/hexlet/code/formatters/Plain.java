@@ -1,42 +1,43 @@
 package hexlet.code.formatters;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import hexlet.code.KeyAttribute;
 
-import static hexlet.code.Differ.KeyAttribute;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class Plain {
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map) {
+            List<Map<String, Object>> list) {
         StringBuilder pretty = new StringBuilder();
-        map.forEach((key, value) -> {
-            switch (key.getValue()) {
+        list.forEach(element -> {
+            switch ((KeyAttribute) element.get("type")) {
                 case ADDED -> {
                     pretty.append("Property '")
-                            .append(key.getKey())
-                            .append("' ")
-                            .append("was added with value: ")
-                            .append(printValue(value[0]));
+                        .append(element.get("key"))
+                        .append("' ")
+                        .append("was added with value: ")
+                        .append(printValue(element.get("value")));
                 }
                 case REMOVED -> {
                     pretty.append("Property '")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append("' ")
                             .append("was removed");
                 }
                 case CHANGED -> {
                     pretty.append("Property '")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append("' ")
                             .append("was updated. From ")
-                            .append(printValue(value[0]))
+                            .append(printValue(element.get("oldValue")))
                             .append(" to ")
-                            .append(printValue(value[1]));
+                            .append(printValue(element.get("newValue")));
                 }
                 default -> {
                 }
             }
-            if (key.getValue() != KeyAttribute.NOT_CHANGED) {
+            if (!Objects.equals(element.get("type"), KeyAttribute.NOT_CHANGED)) {
                 pretty.append(System.lineSeparator());
             }
         });

@@ -10,26 +10,18 @@ import java.util.HashMap;
 
 public class Parser {
 
-    public static HashMap<String, Object> parseContent(String content, String format) {
+    public static HashMap<String, Object> parseContent(String content, String format) throws JsonProcessingException {
         ObjectMapper mapper;
         switch (format) {
             case "yml" -> {
                 mapper = new YAMLMapper();
-                try {
-                    return mapper.readValue(content, new TypeReference<>() {
-                    });
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
+                return mapper.readValue(content, new TypeReference<>() {
+                });
             }
             case "json" -> {
                 mapper = new JsonMapper();
-                try {
-                    return mapper.readValue(content, new TypeReference<>() {
-                    });
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
+                return mapper.readValue(content, new TypeReference<>() {
+                });
             }
             default -> {
                 return null;

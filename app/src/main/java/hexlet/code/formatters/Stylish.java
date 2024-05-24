@@ -4,55 +4,55 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import hexlet.code.KeyAttribute;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-
-import static hexlet.code.Differ.KeyAttribute;
 
 public class Stylish {
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map) {
+            List<Map<String, Object>> list) {
         StringBuilder pretty = new StringBuilder();
         pretty.append("{").append(System.lineSeparator());
-        map.forEach((key, value) -> {
+        list.forEach(element -> {
             pretty.append("  ");
-            switch (key.getValue()) {
+            switch ((KeyAttribute) element.get("type")) {
                 case ADDED -> {
                     pretty
                             .append("+ ")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(value[0]))
+                            .append(printValue(element.get("value")))
                             .append(System.lineSeparator());
                 }
                 case CHANGED -> {
                     pretty
                             .append("- ")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(value[0]))
+                            .append(printValue(element.get("oldValue")))
                             .append(System.lineSeparator())
                             .append("  ")
                             .append("+ ")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(value[1]))
+                            .append(printValue(element.get("newValue")))
                             .append(System.lineSeparator());
                 }
                 case REMOVED -> {
                     pretty.append("- ")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(value[0]))
+                            .append(printValue(element.get("value")))
                             .append(System.lineSeparator());
                 }
                 default -> {
                     pretty.append("  ")
-                            .append(key.getKey())
+                            .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(value[0]))
+                            .append(printValue(element.get("value")))
                             .append(System.lineSeparator());
                 }
             }

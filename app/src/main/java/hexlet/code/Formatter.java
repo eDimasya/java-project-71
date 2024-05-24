@@ -5,7 +5,7 @@ import hexlet.code.formatters.Plain;
 import hexlet.code.formatters.Stylish;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Formatter {
@@ -14,12 +14,12 @@ public class Formatter {
     public static final String JSON = "json";
 
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, Differ.KeyAttribute>, Object[]> map,
+            List<Map<String, Object>> list,
             String format) throws IOException {
         return switch (format) {
-            case STYLISH -> Stylish.prettyPrint(map);
-            case PLAIN -> Plain.prettyPrint(map);
-            case JSON -> Json.prettyPrint(map);
+            case STYLISH -> Stylish.prettyPrint(list);
+            case PLAIN -> Plain.prettyPrint(list);
+            case JSON -> Json.prettyPrint(list);
             default -> null;
         };
     }

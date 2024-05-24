@@ -37,11 +37,15 @@ public class App implements Callable<Integer> {
     }
 
     /**
-     * @return 0
+     * @return 0 if OK, 1 if exception
      */
     @Override
-    public Integer call() throws IOException {
-        System.out.println(Differ.generate(filepath1, filepath2, format));
-        return 0;
+    public Integer call() {
+        try {
+            System.out.println(Differ.generate(filepath1, filepath2, format));
+            return 0;
+        } catch (IOException e) {
+            return 1;
+        }
     }
 }

@@ -1,39 +1,39 @@
 package hexlet.code.formatters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.KeyAttribute;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-
-import static hexlet.code.Differ.KeyAttribute;
 
 public class Json {
     public static String prettyPrint(
-            LinkedHashMap<Map.Entry<String, KeyAttribute>, Object[]> map)
+            List<Map<String, Object>> list)
             throws IOException {
         LinkedHashMap<String, Object> prettyMap = new LinkedHashMap<>();
-        map.forEach((key, value) -> {
-            switch (key.getValue()) {
+        list.forEach(element -> {
+            switch ((KeyAttribute) element.get("type")) {
                 case ADDED -> {
                     prettyMap
-                            .put("+ " + key.getKey(),
-                                    value[0]);
+                            .put("+ " + element.get("key"),
+                                    element.get("value"));
                 }
                 case CHANGED -> {
                     prettyMap
-                            .put("- " + key.getKey(),
-                                    value[0]);
-                    prettyMap.put("+ " + key.getKey(),
-                            value[1]);
+                            .put("- " + element.get("key"),
+                                    element.get("oldValue"));
+                    prettyMap.put("+ " + element.get("key"),
+                            element.get("newValue"));
                 }
                 case REMOVED -> {
-                    prettyMap.put("- " + key.getKey(),
-                            value[0]);
+                    prettyMap.put("- " + element.get("key"),
+                            element.get("value"));
                 }
                 default -> {
-                    prettyMap.put(key.getKey(),
-                            value[0]);
+                    prettyMap.put(element.get("key").toString(),
+                            element.get("value"));
                 }
             }
         });
