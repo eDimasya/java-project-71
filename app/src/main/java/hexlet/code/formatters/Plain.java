@@ -30,9 +30,9 @@ public class Plain {
                             .append(element.get("key"))
                             .append("' ")
                             .append("was updated. From ")
-                            .append(printValue(element.get("oldValue")))
+                            .append(printValue(element.get("value1")))
                             .append(" to ")
-                            .append(printValue(element.get("newValue")));
+                            .append(printValue(element.get("value2")));
                 }
                 default -> {
                 }

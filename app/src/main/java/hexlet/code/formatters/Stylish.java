@@ -32,13 +32,13 @@ public class Stylish {
                             .append("- ")
                             .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(element.get("oldValue")))
+                            .append(printValue(element.get("value1")))
                             .append(System.lineSeparator())
                             .append("  ")
                             .append("+ ")
                             .append(element.get("key"))
                             .append(": ")
-                            .append(printValue(element.get("newValue")))
+                            .append(printValue(element.get("value2")))
                             .append(System.lineSeparator());
                 }
                 case REMOVED -> {

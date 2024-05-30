@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Json {
-    public static String prettyPrint(
-            List<Map<String, Object>> list)
-            throws IOException {
+    public static String prettyPrint(List<Map<String, Object>> list) throws IOException {
         return new ObjectMapper()
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(list);
