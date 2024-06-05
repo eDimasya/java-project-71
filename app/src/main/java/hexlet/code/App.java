@@ -10,6 +10,8 @@ import picocli.CommandLine.Parameters;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
+import static hexlet.code.Formatter.STYLISH;
+
 @Getter
 @Command(mixinStandardHelpOptions = true,
         name = "genDiff",
@@ -28,7 +30,7 @@ public class App implements Callable<Integer> {
 
     @Option(names = {"-f", "--format"},
             help = true,
-            defaultValue = Formatter.STYLISH,
+            defaultValue = STYLISH,
             description = "output format [default: ${DEFAULT-VALUE}]")
     private static String format;
 

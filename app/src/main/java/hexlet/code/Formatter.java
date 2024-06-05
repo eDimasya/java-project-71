@@ -13,9 +13,7 @@ public class Formatter {
     public static final String PLAIN = "plain";
     public static final String JSON = "json";
 
-    public static String prettyPrint(
-            List<Map<String, Object>> list,
-            String format) throws IOException {
+    public static String prettyPrint(List<Map<String, Object>> list, String format) throws IOException {
         return switch (format) {
             case STYLISH -> Stylish.prettyPrint(list);
             case PLAIN -> Plain.prettyPrint(list);

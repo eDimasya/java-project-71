@@ -1,7 +1,12 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
+
+import static hexlet.code.Formatter.JSON;
+import static hexlet.code.Formatter.PLAIN;
+import static hexlet.code.Formatter.STYLISH;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,19 +23,18 @@ class DifferTest {
         String file2YmlPath = testResPath + "file2.yml";
         //Stylish
         String expectedStylish = Files.readString(Utils.getPath(testResPath + "expected/stylish"));
-        Assertions.assertEquals(expectedStylish, Differ.generate(file1YmlPath, file2YmlPath, Formatter.STYLISH));
-        Assertions.assertEquals(expectedStylish, Differ.generate(file1JsonPath, file2JsonPath, Formatter.STYLISH));
-        Assertions.assertEquals(expectedStylish, Differ.generate(file1YmlPath, file2YmlPath));
-        Assertions.assertEquals(expectedStylish, Differ.generate(file1JsonPath, file2JsonPath));
+        assertEquals(expectedStylish, Differ.generate(file1YmlPath, file2YmlPath, STYLISH));
+        assertEquals(expectedStylish, Differ.generate(file1JsonPath, file2JsonPath, STYLISH));
+        assertEquals(expectedStylish, Differ.generate(file1YmlPath, file2YmlPath));
+        assertEquals(expectedStylish, Differ.generate(file1JsonPath, file2JsonPath));
         //Plain
         String expectedPlain = Files.readString(Utils.getPath(testResPath + "expected/plain"));
-        Assertions.assertEquals(expectedPlain, Differ.generate(file1YmlPath, file2YmlPath, Formatter.PLAIN));
+        assertEquals(expectedPlain, Differ.generate(file1YmlPath, file2YmlPath, PLAIN));
         //Json
         ObjectMapper mapper = new ObjectMapper();
         String expectedJson = Files.readString(Utils.getPath(testResPath + "expected/json"));
-        System.out.println(mapper.readTree(expectedJson));
-        Assertions.assertEquals(mapper.readTree(expectedJson),
-                mapper.readTree(Differ.generate(file1YmlPath, file2YmlPath, Formatter.JSON)));
+        assertEquals(mapper.readTree(expectedJson),
+                mapper.readTree(Differ.generate(file1YmlPath, file2YmlPath, JSON)));
 
     }
 }

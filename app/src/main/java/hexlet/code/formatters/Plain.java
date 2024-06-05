@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static hexlet.code.KeyAttribute.NOT_CHANGED;
+
 public class Plain {
     public static String prettyPrint(
             List<Map<String, Object>> list) {
@@ -37,7 +39,7 @@ public class Plain {
                 default -> {
                 }
             }
-            if (!Objects.equals(element.get("type"), KeyAttribute.NOT_CHANGED)) {
+            if (!Objects.equals(element.get("type"), NOT_CHANGED)) {
                 pretty.append(System.lineSeparator());
             }
         });

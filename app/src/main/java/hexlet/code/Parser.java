@@ -15,13 +15,11 @@ public class Parser {
         switch (format) {
             case "yml" -> {
                 mapper = new YAMLMapper();
-                return mapper.readValue(content, new TypeReference<>() {
-                });
+                return mapper.readValue(content, new TypeReference<>() { });
             }
             case "json" -> {
                 mapper = new JsonMapper();
-                return mapper.readValue(content, new TypeReference<>() {
-                });
+                return mapper.readValue(content, new TypeReference<>() { });
             }
             default -> {
                 return null;

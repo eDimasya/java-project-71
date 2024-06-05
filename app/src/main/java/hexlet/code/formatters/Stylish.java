@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Stylish {
-    public static String prettyPrint(
-            List<Map<String, Object>> list) {
+    public static String prettyPrint(List<Map<String, Object>> list) {
         StringBuilder pretty = new StringBuilder();
         pretty.append("{").append(System.lineSeparator());
         list.forEach(element -> {
@@ -21,39 +20,25 @@ public class Stylish {
             switch ((KeyAttribute) element.get("type")) {
                 case ADDED -> {
                     pretty
-                            .append("+ ")
-                            .append(element.get("key"))
-                            .append(": ")
-                            .append(printValue(element.get("value")))
-                            .append(System.lineSeparator());
+                            .append("+ ").append(element.get("key")).append(": ")
+                            .append(printValue(element.get("value"))).append(System.lineSeparator());
                 }
                 case CHANGED -> {
                     pretty
-                            .append("- ")
-                            .append(element.get("key"))
-                            .append(": ")
-                            .append(printValue(element.get("value1")))
-                            .append(System.lineSeparator())
-                            .append("  ")
-                            .append("+ ")
-                            .append(element.get("key"))
-                            .append(": ")
-                            .append(printValue(element.get("value2")))
-                            .append(System.lineSeparator());
+                            .append("- ").append(element.get("key")).append(": ")
+                            .append(printValue(element.get("value1"))).append(System.lineSeparator())
+                            .append("  ").append("+ ").append(element.get("key")).append(": ")
+                            .append(printValue(element.get("value2"))).append(System.lineSeparator());
                 }
                 case REMOVED -> {
                     pretty.append("- ")
-                            .append(element.get("key"))
-                            .append(": ")
-                            .append(printValue(element.get("value")))
-                            .append(System.lineSeparator());
+                            .append(element.get("key")).append(": ")
+                            .append(printValue(element.get("value"))).append(System.lineSeparator());
                 }
                 default -> {
                     pretty.append("  ")
-                            .append(element.get("key"))
-                            .append(": ")
-                            .append(printValue(element.get("value")))
-                            .append(System.lineSeparator());
+                            .append(element.get("key")).append(": ")
+                            .append(printValue(element.get("value"))).append(System.lineSeparator());
                 }
             }
         });

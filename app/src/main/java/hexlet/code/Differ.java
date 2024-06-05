@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Objects;
 
+import static hexlet.code.Formatter.STYLISH;
+
 public class Differ {
 
     public static String generate(String filepath1, String filepath2, String format) throws IOException {
@@ -19,6 +21,6 @@ public class Differ {
     }
 
     public static String generate(String filepath1, String filepath2) throws IOException {
-        return generate(filepath1, filepath2, Formatter.STYLISH);
+        return generate(filepath1, filepath2, STYLISH);
     }
 }
